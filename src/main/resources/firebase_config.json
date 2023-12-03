@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "baladaeventos-5df67",
+  "private_key_id": "79275f6a3a5af2c0813ba3698ed167caba07fb07",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCa/HLKGQfakUQh\nXBDvlWIMNvlZEp6oErfG0ZbOZchcJyP1dY6VmQ+5FXTgWHpNJUC+YH7rBOyy0+AQ\n6LQIUPx00dVrzy87wZUziXFIjAiNVWPY1g+4a1EjaAu/tZ5gPcHGE9uoLQSofP1Z\nTeePfRQLPhBu8eLMcKWX00QgHgpB+1dt+3v6UvMOSTAzHbImJl3l6aNhHE44rD1L\nKfEAv4xfiEs/nR7liPMOH2YJ7K4HbidmFmopnOG7jD9L0LJaVsZGpZeuizAYDj6c\njH+9Eu3k1t6epVUpUeLVECiEoajGMfIdGouAmktPfinajrUzzeifqmJvwGX0s2Iw\nJF8LpryzAgMBAAECggEALlvCribMjZkUCvJx8mf5evPao8UJBfcLV4ILnNMfGklu\n3RX7v02YQWFko1Jzyq2Q7yEH9Z50eo0boZMpfq9SxFKbhvLjCvm9ejvrUarpR/U5\nt3tYGm6nR3LwyLg3lkwCsQ/xjR1iHk+8rEC8OdRM8Yvv+G+LymELdx1vbDfwE4n2\nbMUgvSsiqB97QQUy/0E+VQ7MbeSsXAjwdBAFeSBy3G6MKIBkuF6esKu3dqJ6KGEX\nOtMsqfkrYvyhnJbmVNksCflGFJeXMpXqNouwakUNLnhOATPxG9PPVbMcEWmWqTas\nSmbP+I9KxHuR9U88go6DY0D3UNP3F5CgQcgO+RDO0QKBgQDRmJEWF3ZlXKuxmXg8\nDpQpWFcMpPgMzmQrGY/yX7kFZMGL6eE5uQLo3iI+pvgUMdzA1fFKfinyV8PFdFX9\nTqeWE11n/3zLFHuiTL/f0fKX35PuL2UE4S7zIu2zgT0iyejCeX1CxDVsud7/cxue\nuKYmZuzRAdEdFQPXwhItMiYsGQKBgQC9TLetBBKiT5qagE42XsRRpSE3Hoqi9VUP\nAd0muAlwi5+7VpADaLw4xBM/kVEGFYQIePJRItoFGvBCdGRt4EuFkQsK0cJGbUx4\n3OsoXJ4x560NYVgGa/wv/ijb8HK+cW+S2V1kvjtgQ/iW5tb67cacoI6FdPGfkSoN\nOdEmYcqIqwKBgQCCU7rLoNU22/PK4CH6Php0xwCB1UaEOAXjIub2D/1tVCRhSpGI\nofkkMZPbn1kcvZCFu8JozqBol5gc/GTHuJPOZsYq95tyb48c8VpR4ytUsmo6re/D\no/3co3hoqNEKA8CexIpV7MlHjSATeVDQVgLCWDejEt0jl0CndX516fwAaQKBgFiK\nz8bvhr/AuDHYHb00qmL9+AFOGc6LLhPs7UI1BsVLqZT4sjfF/3QV0mMDV4CfA7jq\nyXzF7nBA32xWALucE/cPlrii0FocuY421w9z8tKo6Lq/c2rdi4HvQbFOUH1fla58\nWUDL8f3fDSGYK6oHGcUdHEy0HGhkf+TbzEZFq3QtAoGAIDdmR9FWJOG8HJgITmY4\nKChmrUfCqYCACEdM602YL7Z+9lIvTUyq9fqvBDVLSLBr1XGDm32W6EVGoUSDKo7z\nfcQyynHTpaMT0/DtZZ7uWYLFIi6Oz+HFlgp84N/laIWKHgTWjiYi8QrZdZYRVdfG\nK/W84I8bzwZnYcn7M11dN4c=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-zbagc@baladaeventos-5df67.iam.gserviceaccount.com",
+  "client_id": "114079536075602275949",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zbagc%40baladaeventos-5df67.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
