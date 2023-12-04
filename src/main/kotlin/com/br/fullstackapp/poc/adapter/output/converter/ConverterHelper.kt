@@ -8,3 +8,9 @@ fun RecursoEntity.toDomain() : RecursoDomain =
         nome = nome,
         chave = chave
     )
+
+fun RecursoDomain.toEntity() : RecursoEntity =
+    RecursoEntity(
+        nome = nome,
+        chave = chave
+    )
