@@ -1,8 +1,8 @@
-package com.br.fullstackapp.poc.adapter.output.firebase.repository
+package com.br.fullstackapp.poc.adapter.output.firebase.repository.recurso
 
 import com.br.fullstackapp.poc.adapter.output.converter.toEntity
-import com.br.fullstackapp.poc.application.domain.RecursoDomain
-import com.br.fullstackapp.poc.application.port.output.RecursoRepositoryPort
+import com.br.fullstackapp.poc.application.domain.recurso.RecursoDomain
+import com.br.fullstackapp.poc.application.port.output.recurso.RecursoRepositoryPort
 import com.google.cloud.firestore.CollectionReference
 import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository

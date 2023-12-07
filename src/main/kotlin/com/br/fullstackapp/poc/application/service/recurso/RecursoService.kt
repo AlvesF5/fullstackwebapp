@@ -1,8 +1,8 @@
-package com.br.fullstackapp.poc.application.service
+package com.br.fullstackapp.poc.application.service.recurso
 
-import com.br.fullstackapp.poc.application.domain.RecursoDomain
-import com.br.fullstackapp.poc.application.port.input.RecursoUseCase
-import com.br.fullstackapp.poc.application.port.output.RecursoRepositoryPort
+import com.br.fullstackapp.poc.application.domain.recurso.RecursoDomain
+import com.br.fullstackapp.poc.application.port.input.recurso.RecursoUseCase
+import com.br.fullstackapp.poc.application.port.output.recurso.RecursoRepositoryPort
 import org.springframework.stereotype.Service
 
 @Service

@@ -1,4 +1,4 @@
-package com.br.fullstackapp.poc.application.domain
+package com.br.fullstackapp.poc.application.domain.recurso
 
 data class RecursoDomain(
     val nome: String?="",
