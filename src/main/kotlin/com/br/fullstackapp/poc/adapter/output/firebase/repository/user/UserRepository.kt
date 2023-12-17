@@ -64,4 +64,27 @@ class UserRepository : UserRepositoryPort {
         return user
     }
 
+    override fun deleteUserById(userId: String) {
+        try {
+            if (getUserById(userId)!=null){
+                println("Entrou aqui!")
+                getCollection().document(userId).delete()
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+    }
+
+    override fun updateUserById(userId: String, userDomain: UserDomain): UserDomain? {
+        try {
+            getCollection().document(userId).set(userDomain)
+            return userDomain
+
+        }catch (e: Exception){
+            e.printStackTrace()
+
+        }
+        return null
+    }
+
 }

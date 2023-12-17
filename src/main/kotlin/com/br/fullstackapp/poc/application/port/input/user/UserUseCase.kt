@@ -8,4 +8,8 @@ interface UserUseCase {
     fun listAllUsers() : ArrayList<UserDomain>?
 
     fun getUserById(userId: String) : UserDomain?
+
+    fun deleteUserById(userId: String)
+
+    fun updateUserById(userId: String, userDomain: UserDomain) : UserDomain?
 }

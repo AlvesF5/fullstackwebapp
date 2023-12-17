@@ -20,4 +20,12 @@ class UserService(
     override fun getUserById(userId: String): UserDomain? {
         return userRepositoryPort.getUserById(userId)
     }
+
+    override fun deleteUserById(userId: String) {
+        userRepositoryPort.deleteUserById(userId)
+    }
+
+    override fun updateUserById(userId: String, userDomain: UserDomain): UserDomain? {
+        return userRepositoryPort.updateUserById(userId,userDomain)
+    }
 }
