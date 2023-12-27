@@ -24,7 +24,7 @@ class UserRepository : UserRepositoryPort {
 
     override fun createUser(userDomain: UserDomain): UserDomain {
         try {
-            getCollection().document(userDomain.id) .set(userDomain.toEntity())
+            userDomain.id?.let { getCollection().document(it) .set(userDomain.toEntity()) }
 
         }catch (e: Exception){
             e.printStackTrace()

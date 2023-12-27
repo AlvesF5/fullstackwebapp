@@ -1,5 +1,8 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
+import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -42,4 +45,21 @@ class UserController(
     fun updateUserById(@PathVariable userId: String, @RequestBody userDomain: UserDomain) : UserDomain?{
         return  userUseCase.updateUserById(userId,userDomain)
     }
+    @PostMapping("/login")
+    fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : UserLoginResponse? {
+        val response = userUseCase.loginUser(userLoginRequest)
+        if (response != null) {
+            return UserLoginResponse(
+                UserLoginResponse.User(
+                    id = response.localId!!,
+                    email = response.email!!,
+                    name = response.displayName!!,
+                    token = response.idToken!!
+                )
+            )
+        }
+
+        return null
+    }
+
 }
