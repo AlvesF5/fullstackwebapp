@@ -54,7 +54,8 @@ class UserController(
                     id = response.localId!!,
                     email = response.email!!,
                     name = response.displayName!!,
-                    token = response.idToken!!
+                    token = response.idToken!!,
+                    refreshToken = response.refreshToken!!
                 )
             )
         }
