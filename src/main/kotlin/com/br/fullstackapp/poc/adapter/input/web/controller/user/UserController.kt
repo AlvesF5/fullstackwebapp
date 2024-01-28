@@ -2,20 +2,10 @@ package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @CrossOrigin(value = ["http://localhost:3000/"])
 @RestController
@@ -48,7 +38,7 @@ class UserController(
         return  userUseCase.updateUserById(userId,userDomain)
     }
     @PostMapping("/login")
-    fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<Any> {
+    fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserLoginResponse> {
         return userUseCase.loginUser(userLoginRequest)
     }
 

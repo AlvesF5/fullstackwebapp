@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
-import org.springframework.web.client.HttpClientErrorException.BadRequest
 import org.springframework.web.client.RestClient
 
 @Component
@@ -44,7 +43,7 @@ class UserManagementAuthClient : UserManagementAuthPort{
         return response?.toDomain() ?: null
     }
 
-    override fun loginUserWhiteEmailAndPassword(userLoginRequest: UserLoginRequest): ResponseEntity<Any> {
+    override fun loginUserWhiteEmailAndPassword(userLoginRequest: UserLoginRequest): ResponseEntity<UserLoginResponse> {
         val request = LoginUserWithEmailAndPasswordRequest(
             email = userLoginRequest.email!!,
             password = userLoginRequest.password!!

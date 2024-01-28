@@ -1,8 +1,7 @@
 package com.br.fullstackapp.poc.application.service.user
 
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.request.CreateUserWithEmailAndPasswordRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
+import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
@@ -41,7 +40,7 @@ class UserService(
         return userRepositoryPort.updateUserById(userId,userDomain)
     }
 
-    override fun loginUser(userLoginRequest: UserLoginRequest): ResponseEntity<Any> {
+    override fun loginUser(userLoginRequest: UserLoginRequest): ResponseEntity<UserLoginResponse> {
         return userManagementAuthPort.loginUserWhiteEmailAndPassword(userLoginRequest)
     }
 }
