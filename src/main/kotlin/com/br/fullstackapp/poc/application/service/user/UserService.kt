@@ -7,6 +7,7 @@ import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -40,7 +41,7 @@ class UserService(
         return userRepositoryPort.updateUserById(userId,userDomain)
     }
 
-    override fun loginUser(userLoginRequest: UserLoginRequest): LoginUserWhiteEmailAndPasswordResponse? {
+    override fun loginUser(userLoginRequest: UserLoginRequest): ResponseEntity<Any> {
         return userManagementAuthPort.loginUserWhiteEmailAndPassword(userLoginRequest)
     }
 }

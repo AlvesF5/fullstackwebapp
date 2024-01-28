@@ -5,6 +5,8 @@ import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -46,21 +48,8 @@ class UserController(
         return  userUseCase.updateUserById(userId,userDomain)
     }
     @PostMapping("/login")
-    fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : UserLoginResponse? {
-        val response = userUseCase.loginUser(userLoginRequest)
-        if (response != null) {
-            return UserLoginResponse(
-                UserLoginResponse.User(
-                    id = response.localId!!,
-                    email = response.email!!,
-                    name = response.displayName!!,
-                    token = response.idToken!!,
-                    refreshToken = response.refreshToken!!
-                )
-            )
-        }
-
-        return null
+    fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<Any> {
+        return userUseCase.loginUser(userLoginRequest)
     }
 
 }

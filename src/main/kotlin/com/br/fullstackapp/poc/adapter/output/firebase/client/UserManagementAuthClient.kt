@@ -1,6 +1,7 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.client
 
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.CreateUserWithEmailAndPasswordRequest
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.LoginUserWithEmailAndPasswordRequest
@@ -8,9 +9,13 @@ import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUser
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
+import org.apache.coyote.BadRequestException
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Component
+import org.springframework.web.client.HttpClientErrorException.BadRequest
 import org.springframework.web.client.RestClient
 
 @Component
@@ -39,18 +44,34 @@ class UserManagementAuthClient : UserManagementAuthPort{
         return response?.toDomain() ?: null
     }
 
-    override fun loginUserWhiteEmailAndPassword(userLoginRequest: UserLoginRequest): LoginUserWhiteEmailAndPasswordResponse? {
+    override fun loginUserWhiteEmailAndPassword(userLoginRequest: UserLoginRequest): ResponseEntity<Any> {
         val request = LoginUserWithEmailAndPasswordRequest(
             email = userLoginRequest.email!!,
             password = userLoginRequest.password!!
         )
 
-        return restClient
+        val response = restClient
             .post()
             .uri(":signInWithPassword?key=$firebaseApiKey")
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
+                throw BadRequestException("${response.statusText}: Usuário e/ou senha inválidos!")}
             .body(LoginUserWhiteEmailAndPasswordResponse::class.java)
+
+
+          val userResp =  UserLoginResponse(
+                UserLoginResponse.User(
+                    id = response!!.localId!!,
+                    email = response.email!!,
+                    name = response.displayName!!,
+                    token = response.idToken!!,
+                    refreshToken = response.refreshToken!!
+                )
+            )
+
+
+       return ResponseEntity.ok(userResp)
     }
 }
