@@ -30,7 +30,8 @@ class UserManagementAuthClient : UserManagementAuthPort{
         val request = CreateUserWithEmailAndPasswordRequest(
             email = userDomain.email!!,
             password = userDomain.password!!,
-            displayName = userDomain.firstName!!
+            displayName = userDomain.displayName!!,
+            lastName = userDomain.lastName!!
         )
         val response = restClient
             .post()
@@ -69,7 +70,6 @@ class UserManagementAuthClient : UserManagementAuthPort{
                     refreshToken = response.refreshToken!!
                 )
             )
-
 
        return ResponseEntity.ok(userResp)
     }

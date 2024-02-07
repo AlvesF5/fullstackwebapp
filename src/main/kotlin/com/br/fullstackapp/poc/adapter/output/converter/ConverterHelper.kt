@@ -27,7 +27,7 @@ fun RecursoDomain.toEntity() : RecursoEntity =
 fun UserDomain.toEntity() : UserEntity =
     UserEntity(
         id= id,
-        firstName = firstName,
+        firstName = displayName,
         lastName = lastName,
         email = email
     )

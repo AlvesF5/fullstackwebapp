@@ -3,18 +3,24 @@ package com.br.fullstackapp.poc.adapter.output.firebase.repository.user
 import com.br.fullstackapp.poc.adapter.output.converter.toEntity
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository
+import java.util.Map
 import kotlin.collections.ArrayList
 
 @Repository
-class UserRepository : UserRepositoryPort {
+class UserRepository(
     private val collection : String = "users"
+) : UserRepositoryPort {
+
 
     fun dbFirestore() = FirestoreClient.getFirestore()
 
@@ -22,6 +28,8 @@ class UserRepository : UserRepositoryPort {
         return dbFirestore().collection(collection)
     }
 
+    @Throws(FirebaseAuthException::class)
+    @JsonCreator
     override fun createUser(userDomain: UserDomain): UserDomain {
         try {
             userDomain.id?.let { getCollection().document(it) .set(userDomain.toEntity()) }
