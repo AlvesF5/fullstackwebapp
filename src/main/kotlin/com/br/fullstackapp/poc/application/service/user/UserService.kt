@@ -2,6 +2,7 @@ package com.br.fullstackapp.poc.application.service.user
 
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
@@ -19,7 +20,7 @@ class UserService(
     val userRepositoryPort: UserRepositoryPort,
     val userManagementAuthPort: UserManagementAuthPort
 ) : UserUseCase {
-    override fun createUser(userDomain: UserDomain): UserDomain {
+    override fun createUser(userDomain: UserDomain, addressDomain: AddressDomain): UserDomain {
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance(FirebaseApp.getInstance())
         val response = userManagementAuthPort.createUserWhiteEmailAndPassword(userDomain)
 
@@ -28,7 +29,7 @@ class UserService(
             firebaseAuth!!.setCustomUserClaims(userDomain.id, Map.of<String, Any>("custom_claims", listOf("CUSTOMER")))
         }
 
-        return userRepositoryPort.createUser(userDomain)
+        return userRepositoryPort.createUser(userDomain, addressDomain)
     }
 
     override fun listAllUsers(): ArrayList<UserDomain>? {

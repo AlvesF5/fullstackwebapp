@@ -1,7 +1,11 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.output.converter.toCreateUserResponse
+import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import org.springframework.http.ResponseEntity
@@ -15,8 +19,8 @@ class UserController(
 ) {
 
     @PostMapping("/create")
-    fun createUser(@RequestBody userDomain: UserDomain): UserDomain{
-        return userUseCase.createUser(userDomain)
+    fun createUser(@RequestBody createUserRequest: CreateUserRequest): CreateUserResponse {
+        return userUseCase.createUser(createUserRequest.toDomain(), createUserRequest.address!!).toCreateUserResponse()
     }
 
     @GetMapping("/list")

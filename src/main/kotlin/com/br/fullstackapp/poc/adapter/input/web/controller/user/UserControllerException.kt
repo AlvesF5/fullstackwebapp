@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class UserControllerException {
-
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException::class)
     fun handleClientErrors(ex: BadRequestException): ResponseEntity<Map<String, List<String>>> {

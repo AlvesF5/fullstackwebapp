@@ -1,6 +1,7 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.repository.user
 
 import com.br.fullstackapp.poc.adapter.output.converter.toEntity
+import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -9,30 +10,36 @@ import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository
-import java.util.Map
+import java.util.*
 import kotlin.collections.ArrayList
 
 @Repository
 class UserRepository(
-    private val collection : String = "users"
+    private val userCollection : String = "users",
+    private val addressCollection: String = "address"
+
 ) : UserRepositoryPort {
 
 
     fun dbFirestore() = FirestoreClient.getFirestore()
 
-    fun getCollection() : CollectionReference {
-        return dbFirestore().collection(collection)
+    fun getCollection(collectionName: String) : CollectionReference {
+        return dbFirestore().collection(collectionName)
     }
 
     @Throws(FirebaseAuthException::class)
     @JsonCreator
-    override fun createUser(userDomain: UserDomain): UserDomain {
+    override fun createUser(userDomain: UserDomain, addressDomain: AddressDomain): UserDomain {
         try {
-            userDomain.id?.let { getCollection().document(it) .set(userDomain.toEntity()) }
+            userDomain.id?.let {
+                val addressId = UUID.randomUUID().toString()
+                getCollection(addressCollection).document(addressId).set(addressDomain.toEntity())
+                userDomain.addressId=getCollection(addressCollection).document(addressId)
+                getCollection(userCollection).document(it).set(userDomain.toEntity())
+            }
 
         }catch (e: Exception){
             e.printStackTrace()
@@ -43,7 +50,7 @@ class UserRepository(
     override fun listAllUsers(): ArrayList<UserDomain>? {
         val response = ArrayList<UserDomain>()
 
-        val querySnapshotFuture : ApiFuture<QuerySnapshot> = getCollection().get()
+        val querySnapshotFuture : ApiFuture<QuerySnapshot> = getCollection(userCollection).get()
         var user : UserDomain?
         try {
             for (doc : DocumentSnapshot in querySnapshotFuture.get().documents){
@@ -59,7 +66,7 @@ class UserRepository(
     }
 
     override fun getUserById(userId: String): UserDomain? {
-        val documentReference : DocumentReference = getCollection().document(userId)
+        val documentReference : DocumentReference = getCollection(userCollection).document(userId)
 
         val future : ApiFuture<DocumentSnapshot> = documentReference.get()
 
@@ -76,7 +83,7 @@ class UserRepository(
         try {
             if (getUserById(userId)!=null){
                 println("Entrou aqui!")
-                getCollection().document(userId).delete()
+                getCollection(userCollection).document(userId).delete()
             }
         }catch (e: Exception){
             e.printStackTrace()
@@ -85,7 +92,7 @@ class UserRepository(
 
     override fun updateUserById(userId: String, userDomain: UserDomain): UserDomain? {
         try {
-            getCollection().document(userId).set(userDomain)
+            getCollection(userCollection).document(userId).set(userDomain)
             return userDomain
 
         }catch (e: Exception){

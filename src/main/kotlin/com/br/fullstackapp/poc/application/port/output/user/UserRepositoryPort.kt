@@ -1,9 +1,10 @@
 package com.br.fullstackapp.poc.application.port.output.user
 
+import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 
 interface UserRepositoryPort {
-    fun createUser(userDomain: UserDomain) : UserDomain
+    fun createUser(userDomain: UserDomain, addressDomain: AddressDomain) : UserDomain
 
     fun listAllUsers() : ArrayList<UserDomain>?
 

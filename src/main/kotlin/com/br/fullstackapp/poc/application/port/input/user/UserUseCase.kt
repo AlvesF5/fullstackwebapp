@@ -2,11 +2,12 @@ package com.br.fullstackapp.poc.application.port.input.user
 
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import org.springframework.http.ResponseEntity
 
 interface UserUseCase {
-    fun createUser(userDomain: UserDomain) : UserDomain
+    fun createUser(userDomain: UserDomain, addressDomain: AddressDomain) : UserDomain
 
     fun listAllUsers() : ArrayList<UserDomain>?
 
