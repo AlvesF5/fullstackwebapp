@@ -25,7 +25,7 @@ class UserService(
         val response = userManagementAuthPort.createUserWhiteEmailAndPassword(userDomain)
 
         if (response!=null){
-            userDomain.id=response.id
+            userDomain.id=response.body?.id
             firebaseAuth!!.setCustomUserClaims(userDomain.id, Map.of<String, Any>("custom_claims", listOf("CUSTOMER")))
         }
 

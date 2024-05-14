@@ -26,7 +26,7 @@ class UserManagementAuthClient : UserManagementAuthPort{
     lateinit var firebaseApiKey : String
     val restClient : RestClient = RestClient.builder().baseUrl("https://identitytoolkit.googleapis.com/v1/accounts").build()
 
-    override fun createUserWhiteEmailAndPassword(userDomain: UserDomain): UserDomain? {
+    override fun createUserWhiteEmailAndPassword(userDomain: UserDomain): ResponseEntity<UserDomain> {
         val request = CreateUserWithEmailAndPasswordRequest(
             email = userDomain.email!!,
             password = userDomain.password!!,
@@ -39,9 +39,11 @@ class UserManagementAuthClient : UserManagementAuthPort{
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
+                throw BadRequestException("Usuário com e-mail já cadastrado!")}
             .body(CreateUserWhiteEmailAndPasswordResponse::class.java)
 
-        return response?.toDomain() ?: null
+        return ResponseEntity.ok(response?.toDomain())
     }
 
     override fun loginUserWhiteEmailAndPassword(userLoginRequest: UserLoginRequest): ResponseEntity<UserLoginResponse> {
@@ -57,7 +59,7 @@ class UserManagementAuthClient : UserManagementAuthPort{
             .body(request)
             .retrieve()
             .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
-                throw BadRequestException("${response.statusText}: Usuário e/ou senha inválidos!")}
+                throw BadRequestException("Usuário e/ou senha inválidos!")}
             .body(LoginUserWhiteEmailAndPasswordResponse::class.java)
 
 
