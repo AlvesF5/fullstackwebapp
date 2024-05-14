@@ -8,6 +8,10 @@ data class UserDomain(
     val lastName: String?="",
     val email: String?="",
     val password: String?="",
+    val phone: String?="",
+    val birthDate: String?="",
+    val documentNumber: String?="",
+    val gender: String?="",
     var addressId: DocumentReference?=null,
 )
 

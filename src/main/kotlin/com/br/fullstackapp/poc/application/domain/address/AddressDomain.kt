@@ -5,6 +5,7 @@ data class AddressDomain(
     val city: String?="",
     val neighborhood: String?="",
     val street: String?="",
+    val number: String?="",
     val complement: String?="",
     val state: UF
 )

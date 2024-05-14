@@ -29,6 +29,10 @@ fun UserDomain.toEntity() : UserEntity =
         lastName = lastName,
         email = email,
         addressId = addressId,
+        documentNumber = documentNumber,
+        birthDate = birthDate,
+        gender = gender,
+        phone = phone
     )
 
 fun UserDomain.toCreateUserResponse() : CreateUserResponse =
@@ -44,7 +48,11 @@ fun CreateUserRequest.toDomain() : UserDomain =
         displayName = firstName,
         lastName = lastName,
         email = email,
-        password = password
+        password = password,
+        phone = phone,
+        birthDate = birthDate,
+        documentNumber = documentNumber,
+        gender = gender
     )
 
 fun AddressDomain.toEntity() : AddressEntity =
@@ -53,6 +61,7 @@ fun AddressDomain.toEntity() : AddressEntity =
         city = city,
         neighborhood = neighborhood,
         street = street,
+        number = number,
         complement = complement,
         state = state
     )
