@@ -7,5 +7,9 @@ data class UserEntity(
     val firstName: String?="",
     val lastName: String?="",
     val email: String?="",
+    val phone: String?="",
+    val birthDate: String?="",
+    val documentNumber: String?="",
+    val gender: String?="",
     val addressId: DocumentReference?=null
 )

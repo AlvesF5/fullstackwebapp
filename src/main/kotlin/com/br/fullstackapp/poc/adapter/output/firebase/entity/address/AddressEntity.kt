@@ -4,9 +4,10 @@ import com.br.fullstackapp.poc.application.domain.address.UF
 
 data class AddressEntity(
     val cep: String?="",
+    val street: String?="",
+    val number: String?="",
+    val state: UF,
     val city: String?="",
     val neighborhood: String?="",
-    val street: String?="",
     val complement: String?="",
-    val state: UF
 )
