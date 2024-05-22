@@ -3,23 +3,19 @@ package com.br.fullstackapp.poc.adapter.output.converter
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
-import com.br.fullstackapp.poc.adapter.output.firebase.entity.recurso.RecursoEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
-import com.br.fullstackapp.poc.application.domain.recurso.RecursoDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
+import java.sql.Timestamp
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun CreateUserWhiteEmailAndPasswordResponse.toDomain() : UserDomain =
     UserDomain(
         id = localId,
         email = email,
-    )
-
-fun RecursoDomain.toEntity() : RecursoEntity =
-    RecursoEntity(
-        nome = nome,
-        chave = chave
     )
 
 fun UserDomain.toEntity() : UserEntity =
@@ -30,7 +26,7 @@ fun UserDomain.toEntity() : UserEntity =
         email = email,
         addressId = addressId,
         documentNumber = documentNumber,
-        birthDate = birthDate,
+        birthDate = convertToTimestamp(birthDate!!),
         gender = gender,
         phone = phone
     )
@@ -66,3 +62,9 @@ fun AddressDomain.toEntity() : AddressEntity =
         state = state
     )
 
+@Throws(ParseException::class)
+fun convertToTimestamp(dateString: String?): Timestamp? {
+    val format = SimpleDateFormat("yyyy-MM-dd")
+    val parsedDate: Date = format.parse(dateString)
+    return Timestamp(parsedDate.getTime())
+}

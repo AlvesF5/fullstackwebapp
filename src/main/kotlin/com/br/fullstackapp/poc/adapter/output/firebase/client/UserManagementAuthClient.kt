@@ -1,7 +1,7 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.client
 
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.CreateUserWithEmailAndPasswordRequest
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.LoginUserWithEmailAndPasswordRequest

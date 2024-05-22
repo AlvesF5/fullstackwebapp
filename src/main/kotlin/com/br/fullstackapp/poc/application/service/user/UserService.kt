@@ -1,7 +1,7 @@
 package com.br.fullstackapp.poc.application.service.user
 
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase

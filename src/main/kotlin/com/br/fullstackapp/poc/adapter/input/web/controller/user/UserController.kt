@@ -2,8 +2,8 @@ package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.input.web.model.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toCreateUserResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain

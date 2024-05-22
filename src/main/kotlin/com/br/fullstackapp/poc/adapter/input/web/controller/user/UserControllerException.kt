@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class UserControllerException {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(BadRequestException::class)
+    @ExceptionHandler(BadRequestException::class, IllegalArgumentException::class)
     fun handleClientErrors(ex: BadRequestException): ResponseEntity<Map<String, List<String>>> {
         val errors = arrayListOf<String>(ex.localizedMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsMap(errors))
