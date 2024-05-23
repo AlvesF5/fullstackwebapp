@@ -28,7 +28,8 @@ fun UserDomain.toEntity() : UserEntity =
         documentNumber = documentNumber,
         birthDate = convertToTimestamp(birthDate!!),
         gender = gender,
-        phone = phone
+        phone = phone,
+        updatedAt = updatedAt
     )
 
 fun UserDomain.toCreateUserResponse() : CreateUserResponse =
@@ -37,7 +38,6 @@ fun UserDomain.toCreateUserResponse() : CreateUserResponse =
         firstName = displayName,
         email = email,
     )
-
 
 fun CreateUserRequest.toDomain() : UserDomain =
     UserDomain(

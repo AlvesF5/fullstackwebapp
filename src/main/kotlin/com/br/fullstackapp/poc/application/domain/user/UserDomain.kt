@@ -1,6 +1,7 @@
 package com.br.fullstackapp.poc.application.domain.user
 
 import com.google.cloud.firestore.DocumentReference
+import java.sql.Timestamp
 
 data class UserDomain(
     var id: String?="",
@@ -12,6 +13,7 @@ data class UserDomain(
     val birthDate: String?="",
     val documentNumber: String?="",
     val gender: String?="",
+    val updatedAt: Timestamp? = null,
     var addressId: DocumentReference?=null,
 )
 
