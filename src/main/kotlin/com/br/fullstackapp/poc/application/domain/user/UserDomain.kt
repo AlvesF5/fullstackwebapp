@@ -14,6 +14,7 @@ data class UserDomain(
     val documentNumber: String?="",
     val gender: String?="",
     val updatedAt: Timestamp? = null,
+    val isActive: Boolean? = false,
     var addressId: DocumentReference?=null,
 )
 

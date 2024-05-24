@@ -16,5 +16,6 @@ data class UserEntity(
     val gender: String?="",
     val createdAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
     val updatedAt: Timestamp? = null,
+    val isActive: Boolean? = false,
     val addressId: DocumentReference?=null
 )
