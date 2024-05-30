@@ -6,6 +6,7 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.U
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toCreateUserResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import org.springframework.http.ResponseEntity
@@ -46,4 +47,8 @@ class UserController(
         return userUseCase.loginUser(userLoginRequest)
     }
 
+    @PostMapping("/info")
+    fun infoUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserGetAccountInfoResponse> {
+        return userUseCase.getAccountInfo(userLoginRequest)
+    }
 }

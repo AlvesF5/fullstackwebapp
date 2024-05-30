@@ -2,6 +2,7 @@ package com.br.fullstackapp.poc.application.service.user
 
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
@@ -29,7 +30,15 @@ class UserService(
             firebaseAuth!!.setCustomUserClaims(userDomain.id, Map.of<String, Any>("custom_claims", listOf("CUSTOMER")))
         }
 
-        return userRepositoryPort.createUser(userDomain, addressDomain)
+        userRepositoryPort.createUser(userDomain, addressDomain).let {
+            if (!it.id.isNullOrBlank()){
+                val userLogged = userManagementAuthPort.loginUserWhiteEmailAndPassword(UserLoginRequest(email = userDomain.email, password = userDomain.password))
+                userManagementAuthPort.sendVerifyEmailRequest(userLogged.body?.user?.token)
+            }
+            return it
+        }
+
+
     }
 
     override fun listAllUsers(): ArrayList<UserDomain>? {
@@ -50,5 +59,10 @@ class UserService(
 
     override fun loginUser(userLoginRequest: UserLoginRequest): ResponseEntity<UserLoginResponse> {
         return userManagementAuthPort.loginUserWhiteEmailAndPassword(userLoginRequest)
+    }
+
+    override fun getAccountInfo(userLoginRequest: UserLoginRequest): ResponseEntity<UserGetAccountInfoResponse> {
+        val userLogged = loginUser(userLoginRequest)
+        return userManagementAuthPort.getAccountInfo(userLogged.body?.user?.token)
     }
 }

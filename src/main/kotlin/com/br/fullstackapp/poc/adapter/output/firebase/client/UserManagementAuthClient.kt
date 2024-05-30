@@ -5,8 +5,12 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.CreateUserWithEmailAndPasswordRequest
 import com.br.fullstackapp.poc.adapter.output.firebase.model.request.LoginUserWithEmailAndPasswordRequest
+import com.br.fullstackapp.poc.adapter.output.firebase.model.request.UserGetAccountInfoRequest
+import com.br.fullstackapp.poc.adapter.output.firebase.model.request.UserVerifyEmailRequest
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserVerifyEmailResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
 import org.apache.coyote.BadRequestException
@@ -74,5 +78,44 @@ class UserManagementAuthClient : UserManagementAuthPort{
             )
 
        return ResponseEntity.ok(userResp)
+    }
+
+    override fun sendVerifyEmailRequest(idToken: String?): ResponseEntity<UserVerifyEmailResponse> {
+        val request = UserVerifyEmailRequest(
+            requestType = "VERIFY_EMAIL",
+            idToken = idToken!!
+        )
+        val response = restClient
+            .post()
+            .uri(":sendOobCode?key=$firebaseApiKey")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
+                throw BadRequestException("Erro ao enviar e-mail de verificação!")
+            }
+            .body(UserVerifyEmailResponse::class.java)
+
+        println("Email: ${response?.email}")
+
+        return ResponseEntity.ok(response)
+    }
+
+    override fun getAccountInfo(idToken: String?): ResponseEntity<UserGetAccountInfoResponse> {
+        val request = UserGetAccountInfoRequest(idToken = idToken!!)
+        val response = restClient
+            .post()
+            .uri(":lookup?key=$firebaseApiKey")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
+                throw BadRequestException("Erro ao obter informações da conta!")
+            }
+            .body(UserGetAccountInfoResponse::class.java)
+
+        val emailVerified = response?.users?.firstOrNull()?.emailVerified ?: false
+        println("Email verificado: $emailVerified")
+        return ResponseEntity.ok(response)
     }
 }
