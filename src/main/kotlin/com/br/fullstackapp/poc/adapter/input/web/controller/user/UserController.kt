@@ -2,8 +2,9 @@ package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
 import com.br.fullstackapp.poc.adapter.input.converter.toDomain
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UpdateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toCreateUserResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
@@ -42,8 +43,8 @@ class UserController(
         userUseCase.deleteUserById(userId)
     }
     @PutMapping("/update/{userId}")
-    fun updateUserById(@PathVariable userId: String, @RequestBody userDomain: UserDomain) : UserDomain?{
-        return  userUseCase.updateUserById(userId,userDomain)
+    fun updateUserById(@PathVariable userId: String, @RequestBody updateUserRequest: UpdateUserRequest) : UserDomain?{
+        return  userUseCase.updateUserById(userId,updateUserRequest.toDomain())
     }
     @PostMapping("/login")
     fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserLoginResponse> {
