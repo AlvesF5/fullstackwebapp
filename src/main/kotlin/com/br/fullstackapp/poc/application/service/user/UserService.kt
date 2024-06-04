@@ -1,10 +1,11 @@
 package com.br.fullstackapp.poc.application.service.user
 
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
+import com.br.fullstackapp.poc.adapter.output.converter.toDomain
+import com.br.fullstackapp.poc.adapter.output.converter.toUserLoginDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
+import com.br.fullstackapp.poc.application.model.UserLoginDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
@@ -57,12 +58,18 @@ class UserService(
         return userRepositoryPort.updateUserById(userId,userDomain)
     }
 
-    override fun loginUser(userLoginRequest: UserLoginRequest): ResponseEntity<UserLoginResponse> {
-        return userManagementAuthPort.loginUserWhiteEmailAndPassword(userLoginRequest)
+    override fun loginUser(userDomain: UserDomain): ResponseEntity<UserLoginDomain> {
+        return userManagementAuthPort.loginUserWhiteEmailAndPassword(
+            UserLoginRequest(
+                email = userDomain.email,
+                password = userDomain.password
+        )).let { ResponseEntity.ok(it.body?.toUserLoginDomain()) }
     }
 
-    override fun getAccountInfo(userLoginRequest: UserLoginRequest): ResponseEntity<UserGetAccountInfoResponse> {
-        val userLogged = loginUser(userLoginRequest)
-        return userManagementAuthPort.getAccountInfo(userLogged.body?.user?.token)
+    override fun getAccountInfo(userDomain: UserDomain): ResponseEntity<UserDomain> {
+        val userLogged = loginUser(userDomain)
+        return userManagementAuthPort.getAccountInfo(userLogged.body?.user?.token).let {
+            ResponseEntity.ok(it.body?.users?.first()?.toDomain())
+        }
     }
 }

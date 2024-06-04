@@ -1,11 +1,14 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
+import com.br.fullstackapp.poc.adapter.input.converter.toDomain
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toCreateUserResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
+import com.br.fullstackapp.poc.adapter.output.converter.toUserAccountInformationResp
+import com.br.fullstackapp.poc.adapter.output.converter.toUserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
@@ -44,11 +47,15 @@ class UserController(
     }
     @PostMapping("/login")
     fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserLoginResponse> {
-        return userUseCase.loginUser(userLoginRequest)
+        return userUseCase.loginUser(userLoginRequest.toDomain()).let {
+            ResponseEntity.ok(it.body?.toUserLoginResponse())
+        }
     }
 
     @PostMapping("/info")
     fun infoUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserGetAccountInfoResponse> {
-        return userUseCase.getAccountInfo(userLoginRequest)
+        return userUseCase.getAccountInfo(userLoginRequest.toDomain()).let {
+            ResponseEntity.ok(it.body?.toUserAccountInformationResp())
+        }
     }
 }

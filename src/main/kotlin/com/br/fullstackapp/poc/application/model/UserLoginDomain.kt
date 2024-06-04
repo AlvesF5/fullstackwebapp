@@ -1,6 +1,6 @@
-package com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response
+package com.br.fullstackapp.poc.application.model
 
-data class UserLoginResponse(
+data class UserLoginDomain(
     val user: User
 ){
     data class User(

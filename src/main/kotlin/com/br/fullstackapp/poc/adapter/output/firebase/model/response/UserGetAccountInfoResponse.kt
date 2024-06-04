@@ -6,6 +6,6 @@ data class UserGetAccountInfoResponse(
 )
 
 data class UserInfo(
-    val email: String,
-    val emailVerified: Boolean
+    val email: String?,
+    val emailVerified: Boolean?
 )
