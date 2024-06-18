@@ -13,7 +13,9 @@ import com.google.cloud.firestore.QuerySnapshot
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository
+import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.util.*
+
 import kotlin.collections.ArrayList
 
 @Repository
@@ -36,12 +38,22 @@ class UserRepository(
         try {
             userDomain.id?.let {
                 val addressId = UUID.randomUUID().toString()
-                getCollection(addressCollection).document(addressId).set(addressDomain.toEntity())
-                userDomain.addressId=getCollection(addressCollection).document(addressId)
-                getCollection(userCollection).document(it).set(userDomain.toEntity())
-            }
+                val addressRef = getCollection(addressCollection).document(addressId)
+                val addressSaveResult = addressRef.set(addressDomain.toEntity()).get()
 
-        }catch (e: Exception){
+                if (addressSaveResult != null) {
+                    userDomain.addressId = addressRef
+                    val userSaveResult = getCollection(userCollection).document(it).set(userDomain.toEntity()).get()
+
+                    if (userSaveResult == null) {
+                        throw Exception("Ocorreu um erro ao salvar o usuário")
+                    }
+
+                } else {
+                    throw Exception("Ocorreu um erro ao salvar o endereço")
+                }
+            }
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         return userDomain
@@ -82,7 +94,6 @@ class UserRepository(
     override fun deleteUserById(userId: String) {
         try {
             if (getUserById(userId)!=null){
-                println("Entrou aqui!")
                 getCollection(userCollection).document(userId).delete()
             }
         }catch (e: Exception){
