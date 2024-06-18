@@ -72,4 +72,10 @@ class UserService(
             ResponseEntity.ok(it.body?.users?.first()?.toDomain())
         }
     }
+
+    override fun sendPasswordResetEmail(email: String): ResponseEntity<UserDomain> {
+        return userManagementAuthPort.sendPasswordResetEmail(email).let {
+            ResponseEntity.ok(it.body?.toDomain())
+        }
+    }
 }

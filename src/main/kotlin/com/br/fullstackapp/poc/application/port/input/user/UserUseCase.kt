@@ -1,6 +1,5 @@
 package com.br.fullstackapp.poc.application.port.input.user
 
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.model.UserLoginDomain
@@ -20,4 +19,6 @@ interface UserUseCase {
     fun loginUser(userDomain: UserDomain) : ResponseEntity<UserLoginDomain>
 
     fun getAccountInfo(userDomain: UserDomain): ResponseEntity<UserDomain>
+
+    fun sendPasswordResetEmail(email: String): ResponseEntity<UserDomain>
 }

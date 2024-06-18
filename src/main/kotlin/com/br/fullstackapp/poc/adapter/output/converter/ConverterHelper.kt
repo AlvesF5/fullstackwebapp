@@ -8,6 +8,7 @@ import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUserWhiteEmailAndPasswordResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserInfo
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserResetPassResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.model.UserLoginDomain
@@ -85,6 +86,10 @@ fun UserLoginResponse.toUserLoginDomain() = UserLoginDomain(
         token = user.token,
         refreshToken = user.refreshToken
     )
+)
+
+fun UserResetPassResponse.toDomain() = UserDomain(
+    email = email
 )
 
 fun UserLoginDomain.toUserLoginResponse() = UserLoginResponse(
