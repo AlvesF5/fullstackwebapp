@@ -3,14 +3,8 @@ package com.br.fullstackapp.poc.adapter.output.firebase.client
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
-import com.br.fullstackapp.poc.adapter.output.firebase.model.request.CreateUserWithEmailAndPasswordRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.request.LoginUserWithEmailAndPasswordRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.request.UserGetAccountInfoRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.request.UserVerifyEmailRequest
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUserWhiteEmailAndPasswordResponse
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.LoginUserWhiteEmailAndPasswordResponse
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
-import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserVerifyEmailResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.request.*
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.*
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
 import org.apache.coyote.BadRequestException
@@ -97,6 +91,25 @@ class UserManagementAuthClient : UserManagementAuthPort{
             .body(UserVerifyEmailResponse::class.java)
 
         println("Email: ${response?.email}")
+
+        return ResponseEntity.ok(response)
+    }
+
+    override fun sendPasswordResetEmail(email: String): ResponseEntity<UserResetPassResponse> {
+        val request = UserResetPassRequest(
+            requestType = "PASSWORD_RESET",
+            email = email
+        )
+        val response = restClient
+            .post()
+            .uri(":sendOobCode?key=$firebaseApiKey")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, clientResponse ->
+                throw BadRequestException("Erro ao enviar e-mail de redefinição de senha: $clientResponse")
+            }
+            .body(UserResetPassResponse::class.java)
 
         return ResponseEntity.ok(response)
     }
