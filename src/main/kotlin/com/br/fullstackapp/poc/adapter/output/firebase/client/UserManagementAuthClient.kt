@@ -106,8 +106,8 @@ class UserManagementAuthClient : UserManagementAuthPort{
             .contentType(MediaType.APPLICATION_JSON)
             .body(request)
             .retrieve()
-            .onStatus(HttpStatusCode::is4xxClientError) { _, clientResponse ->
-                throw BadRequestException("Erro ao enviar e-mail de redefinição de senha: $clientResponse")
+            .onStatus(HttpStatusCode::is4xxClientError) { _, response ->
+                throw BadRequestException("O e-mail inserido não foi encontrado em nossa base de dados!")
             }
             .body(UserResetPassResponse::class.java)
 
