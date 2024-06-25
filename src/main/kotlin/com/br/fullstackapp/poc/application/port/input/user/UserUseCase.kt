@@ -21,4 +21,6 @@ interface UserUseCase {
     fun getAccountInfo(userDomain: UserDomain): ResponseEntity<UserDomain>
 
     fun sendPasswordResetEmail(email: String): ResponseEntity<UserDomain>
+
+    fun sendVerificationEmail(userDomain: UserDomain): ResponseEntity<UserDomain>
 }

@@ -3,6 +3,7 @@ package com.br.fullstackapp.poc.adapter.output.converter
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserSendVerificationEmailResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.CreateUserWhiteEmailAndPasswordResponse
@@ -48,6 +49,9 @@ fun UserDomain.toUserAccountInformationResp() = UserGetAccountInfoResponse(
     users = listOf(UserInfo(email= email, emailVerified = isActive))
 )
 
+fun UserDomain.toSendVerificationEmailResponse() = UserSendVerificationEmailResponse(
+    email = email!!
+)
 fun CreateUserRequest.toDomain() : UserDomain =
     UserDomain(
         displayName = firstName,

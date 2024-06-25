@@ -3,6 +3,7 @@ package com.br.fullstackapp.poc.application.service.user
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.converter.toUserLoginDomain
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.model.UserLoginDomain
@@ -76,6 +77,13 @@ class UserService(
     override fun sendPasswordResetEmail(email: String): ResponseEntity<UserDomain> {
         return userManagementAuthPort.sendPasswordResetEmail(email).let {
             ResponseEntity.ok(it.body?.toDomain())
+        }
+    }
+
+    override fun sendVerificationEmail(userDomain: UserDomain): ResponseEntity<UserDomain> {
+        return userManagementAuthPort.loginUserWhiteEmailAndPassword(UserLoginRequest(email = userDomain.email, password = userDomain.password)).let {
+            val token = it.body?.user?.token
+            ResponseEntity.ok(userManagementAuthPort.sendVerifyEmailRequest(token).body?.toDomain())
         }
     }
 }

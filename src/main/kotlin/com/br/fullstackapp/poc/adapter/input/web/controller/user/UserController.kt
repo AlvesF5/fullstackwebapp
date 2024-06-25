@@ -8,6 +8,7 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.U
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserSendVerificationEmailResponse
 import com.br.fullstackapp.poc.adapter.output.converter.*
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
@@ -65,5 +66,10 @@ class UserController(
         return userUseCase.sendPasswordResetEmail(userResetPassRequest.email).let {
             ResponseEntity.ok(it.body?.toResetPassResponse())
         }
+    }
+
+    @PostMapping("/sendVerificationEmail")
+    fun userSendVerificationEmail(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserSendVerificationEmailResponse>{
+        return ResponseEntity.ok(userUseCase.sendVerificationEmail(userLoginRequest.toDomain()).body?.toSendVerificationEmailResponse())
     }
 }
