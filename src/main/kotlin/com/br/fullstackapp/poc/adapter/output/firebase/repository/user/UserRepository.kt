@@ -13,10 +13,7 @@ import com.google.cloud.firestore.QuerySnapshot
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
 import org.springframework.stereotype.Repository
-import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.util.*
-
-import kotlin.collections.ArrayList
 
 @Repository
 class UserRepository(

@@ -27,21 +27,21 @@ fun CreateUserWhiteEmailAndPasswordResponse.toDomain() : UserDomain =
 fun UserDomain.toEntity() : UserEntity =
     UserEntity(
         id = id,
-        firstName = displayName,
+        firstName = firstName,
         lastName = lastName,
         email = email,
         addressId = addressId,
         documentNumber = documentNumber,
-        birthDate = convertToTimestamp(birthDate!!),
+        birthDate = convertToTimestamp(birthDate.toString()),
         gender = gender,
         phone = phone,
-        updatedAt = updatedAt
+        updatedAt = convertToTimestamp(updatedAt.toString())
     )
 
 fun UserDomain.toCreateUserResponse() : CreateUserResponse =
     CreateUserResponse(
         id = id,
-        firstName = displayName,
+        firstName = firstName,
         email = email,
     )
 
@@ -54,12 +54,12 @@ fun UserDomain.toSendVerificationEmailResponse() = UserSendVerificationEmailResp
 )
 fun CreateUserRequest.toDomain() : UserDomain =
     UserDomain(
-        displayName = firstName,
+        firstName = firstName,
         lastName = lastName,
         email = email,
         password = password,
         phone = phone,
-        birthDate = birthDate,
+        birthDate = convertToTimestamp(birthDate),
         documentNumber = documentNumber,
         gender = gender
     )

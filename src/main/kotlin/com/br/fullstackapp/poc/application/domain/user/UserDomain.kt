@@ -1,20 +1,21 @@
 package com.br.fullstackapp.poc.application.domain.user
 
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.google.cloud.firestore.DocumentReference
-import java.sql.Timestamp
+import java.util.Date;
 
 data class UserDomain(
     var id: String?="",
-    val displayName: String?="",
+    val firstName: String?="",
     val lastName: String?="",
     val email: String?="",
     val password: String?="",
     val phone: String?="",
-    val birthDate: String?="",
+    val birthDate: Date? = null,
     val documentNumber: String?="",
     val gender: String?="",
-    val updatedAt: Timestamp? = null,
+    val updatedAt: Date? = null,
     val isActive: Boolean? = false,
     var addressId: DocumentReference?=null,
 )
