@@ -6,7 +6,7 @@ data class AddressEntity(
     val cep: String?="",
     val street: String?="",
     val number: String?="",
-    val state: UF,
+    val state: UF?=null,
     val city: String?="",
     val neighborhood: String?="",
     val complement: String?="",

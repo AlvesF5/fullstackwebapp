@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import java.sql.Timestamp
+import java.time.LocalDateTime
 import java.util.Map
 
 @Service
@@ -29,6 +31,8 @@ class UserService(
 
         if (response!=null){
             userDomain.id=response.body?.id
+            userDomain.updatedAt= Timestamp.valueOf(LocalDateTime.now())
+            userDomain.createdAt= Timestamp.valueOf(LocalDateTime.now())
             firebaseAuth!!.setCustomUserClaims(userDomain.id, Map.of<String, Any>("custom_claims", listOf("CUSTOMER")))
         }
 
@@ -47,8 +51,10 @@ class UserService(
         return userRepositoryPort.listAllUsers()
     }
 
-    override fun getUserById(userId: String): UserDomain? {
-        return userRepositoryPort.getUserById(userId)
+    override fun getUserById(userId: String): ResponseEntity<UserDomain> {
+        return userRepositoryPort.getUserById(userId).let {
+            ResponseEntity.ok(it)
+        }
     }
 
     override fun deleteUserById(userId: String) {

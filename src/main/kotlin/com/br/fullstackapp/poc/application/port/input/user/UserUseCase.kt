@@ -10,7 +10,7 @@ interface UserUseCase {
 
     fun listAllUsers() : ArrayList<UserDomain>?
 
-    fun getUserById(userId: String) : UserDomain?
+    fun getUserById(userId: String) : ResponseEntity<UserDomain>
 
     fun deleteUserById(userId: String)
 

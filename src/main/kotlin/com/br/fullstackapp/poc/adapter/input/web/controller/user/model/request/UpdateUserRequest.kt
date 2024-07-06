@@ -11,7 +11,7 @@ data class UpdateUserRequest(
     val email: String?="",
     val password: String?="",
     val phone: String?="",
-    val birthDate: String?="",
+    val birthDate: Timestamp?=null,
     val documentNumber: String?="",
     val gender: String?="",
     val updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),

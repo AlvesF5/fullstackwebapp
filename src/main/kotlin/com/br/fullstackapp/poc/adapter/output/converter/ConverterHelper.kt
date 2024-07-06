@@ -27,26 +27,27 @@ fun CreateUserWhiteEmailAndPasswordResponse.toDomain() : UserDomain =
 fun UserDomain.toEntity() : UserEntity =
     UserEntity(
         id = id,
-        firstName = displayName,
+        firstName = firstName,
         lastName = lastName,
         email = email,
         addressId = addressId,
         documentNumber = documentNumber,
-        birthDate = convertToTimestamp(birthDate!!),
+        birthDate = birthDate,
         gender = gender,
         phone = phone,
+        createdAt = createdAt,
         updatedAt = updatedAt
     )
 
 fun UserDomain.toCreateUserResponse() : CreateUserResponse =
     CreateUserResponse(
         id = id,
-        firstName = displayName,
+        firstName = firstName,
         email = email,
     )
 
 fun UserDomain.toUserAccountInformationResp() = UserGetAccountInfoResponse(
-    users = listOf(UserInfo(email= email, emailVerified = isActive))
+    users = listOf(UserInfo(email= email, emailVerified = active))
 )
 
 fun UserDomain.toSendVerificationEmailResponse() = UserSendVerificationEmailResponse(
@@ -54,7 +55,7 @@ fun UserDomain.toSendVerificationEmailResponse() = UserSendVerificationEmailResp
 )
 fun CreateUserRequest.toDomain() : UserDomain =
     UserDomain(
-        displayName = firstName,
+        firstName = firstName,
         lastName = lastName,
         email = email,
         password = password,
@@ -74,13 +75,6 @@ fun AddressDomain.toEntity() : AddressEntity =
         complement = complement,
         state = state
     )
-
-@Throws(ParseException::class)
-fun convertToTimestamp(dateString: String?): Timestamp? {
-    val format = SimpleDateFormat("yyyy-MM-dd")
-    val parsedDate: Date = format.parse(dateString)
-    return Timestamp(parsedDate.getTime())
-}
 
 fun UserLoginResponse.toUserLoginDomain() = UserLoginDomain(
     user = UserLoginDomain.User(
@@ -108,5 +102,5 @@ fun UserLoginDomain.toUserLoginResponse() = UserLoginResponse(
 
 fun UserInfo.toDomain() = UserDomain(
     email = email,
-    isActive = emailVerified
+    active = emailVerified
 )

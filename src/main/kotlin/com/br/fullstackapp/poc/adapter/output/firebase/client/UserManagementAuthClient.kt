@@ -28,7 +28,7 @@ class UserManagementAuthClient : UserManagementAuthPort{
         val request = CreateUserWithEmailAndPasswordRequest(
             email = userDomain.email!!,
             password = userDomain.password!!,
-            displayName = userDomain.displayName!!,
+            displayName = userDomain.firstName!!,
             lastName = userDomain.lastName!!
         )
         val response = restClient

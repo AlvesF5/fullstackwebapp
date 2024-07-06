@@ -6,16 +6,17 @@ import java.sql.Timestamp
 
 data class UserDomain(
     var id: String?="",
-    val displayName: String?="",
+    val firstName: String?="",
     val lastName: String?="",
     val email: String?="",
     val password: String?="",
     val phone: String?="",
-    val birthDate: String?="",
+    val birthDate: Timestamp?=null,
     val documentNumber: String?="",
     val gender: String?="",
-    val updatedAt: Timestamp? = null,
-    val isActive: Boolean? = false,
+    var createdAt: Timestamp? = null,
+    var updatedAt: Timestamp? = null,
+    val active: Boolean? = false,
     var addressId: DocumentReference?=null,
 )
 

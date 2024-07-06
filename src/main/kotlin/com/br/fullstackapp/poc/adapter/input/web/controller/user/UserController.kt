@@ -35,7 +35,7 @@ class UserController(
     }
 
     @GetMapping("{userId}")
-    fun getUserById(@PathVariable userId: String) : UserDomain?{
+    fun getUserById(@PathVariable userId: String) : ResponseEntity<UserDomain>{
         return userUseCase.getUserById(userId)
     }
 

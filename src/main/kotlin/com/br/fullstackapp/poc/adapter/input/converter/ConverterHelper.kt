@@ -11,7 +11,7 @@ fun UserLoginRequest.toDomain() = UserDomain(
 
 fun UpdateUserRequest.toDomain() = UserDomain(
     id = id,
-    displayName = displayName,
+    firstName = displayName,
     lastName = lastName,
     email = email,
     password = password,

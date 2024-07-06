@@ -1,6 +1,8 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.repository.user
 
 import com.br.fullstackapp.poc.adapter.output.converter.toEntity
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
@@ -12,9 +14,11 @@ import com.google.cloud.firestore.DocumentSnapshot
 import com.google.cloud.firestore.QuerySnapshot
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
+import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Repository
 import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.util.*
+import java.util.concurrent.ExecutionException
 
 import kotlin.collections.ArrayList
 
@@ -77,19 +81,41 @@ class UserRepository(
         return null
     }
 
+    @Throws(ExecutionException::class, InterruptedException::class)
     override fun getUserById(userId: String): UserDomain? {
-        val documentReference : DocumentReference = getCollection(userCollection).document(userId)
 
-        val future : ApiFuture<DocumentSnapshot> = documentReference.get()
+        try {
+            val documentReference : DocumentReference = getCollection(userCollection).document(userId)
 
-        val userDocument : DocumentSnapshot = future.get()
+            val future : ApiFuture<DocumentSnapshot> = documentReference.get()
 
-        var user : UserDomain? = null
+            val userDocument : DocumentSnapshot = future.get()
 
-        if (userDocument.exists()) user = userDocument.toObject(UserDomain::class.java)
+            var user : UserEntity? = null
 
-        return user
+            if (userDocument.exists()){
+                user = userDocument.toObject(UserEntity::class.java)
+
+                user?.let {
+                    val birthDate = userDocument.getDate("birthDate")
+                    val createdAt = userDocument.getDate("createdAt")
+                    val updatedAt = userDocument.getDate("updatedAt")
+                    if (birthDate != null && createdAt != null && updatedAt != null) {
+                        it.insertBirthDate(birthDate)
+                        it.insertCreatedAtDate(createdAt)
+                        updatedAt?.let { it1 -> it.insertUpdatedAt(it1) }
+                    }
+                }
+
+            }
+            return user!!.toDomain()
+        }catch (e: Exception){
+            e.printStackTrace()
+            throw BadRequestException("Não foi possível carregar as informações do usuário!")
+        }
+
     }
+
 
     override fun deleteUserById(userId: String) {
         try {
