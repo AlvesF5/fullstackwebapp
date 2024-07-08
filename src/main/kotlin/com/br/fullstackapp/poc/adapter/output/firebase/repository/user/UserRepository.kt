@@ -8,6 +8,7 @@ import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.google.api.core.ApiFuture
+import com.google.api.gax.rpc.NotFoundException
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentSnapshot
@@ -78,47 +79,24 @@ class UserRepository(
         return null
     }
 
-    @Throws(ExecutionException::class, InterruptedException::class)
-    override fun getUserById(userId: String): UserDomain? {
+    override fun getUserById(id: String): UserEntity?{
 
         try {
-            val documentReference : DocumentReference = getCollection(userCollection).document(userId)
-
+            val documentReference : DocumentReference = getCollection(userCollection).document(id)
             val future : ApiFuture<DocumentSnapshot> = documentReference.get()
 
             val userDocument : DocumentSnapshot = future.get()
-
-            var user : UserEntity? = null
-
             if (userDocument.exists()){
-                user = userDocument.toObject(UserEntity::class.java)
-
-//                user?.let {
-//                    val birthDate = userDocument.getDate("birthDate")
-//                    val createdAt = userDocument.getDate("createdAt")
-//                    val updatedAt = userDocument.getDate("updatedAt")
-//                    if (birthDate != null && createdAt != null && updatedAt != null) {
-//                        it.insertBirthDate(birthDate)
-//                        it.insertCreatedAtDate(createdAt)
-//                        updatedAt?.let { it1 -> it.insertUpdatedAt(it1) }
-//                    }
-//                }
-
+                return userDocument.toObject(UserEntity::class.java)
             }
-            return user!!.toDomain()
+
+            throw BadRequestException("Usuário não encontrado na base de dados!")
+
         }catch (e: Exception){
             e.printStackTrace()
-            throw BadRequestException("Não foi possível carregar as informações do usuário!")
+            throw BadRequestException(e.message)
         }
 
-    }
-
-    override fun getUser(id: String): UserEntity?{
-        val documentReference : DocumentReference = getCollection(userCollection).document(id)
-        val future : ApiFuture<DocumentSnapshot> = documentReference.get()
-
-        val userDocument : DocumentSnapshot = future.get()
-        return userDocument.toObject(UserEntity::class.java)
     }
 
 

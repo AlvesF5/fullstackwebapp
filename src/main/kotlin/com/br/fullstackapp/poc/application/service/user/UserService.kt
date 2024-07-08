@@ -54,7 +54,7 @@ class UserService(
     }
 
     override fun getUserById(userId: String): ResponseEntity<UserDomain> {
-        return userRepositoryPort.getUser(userId).let {
+        return userRepositoryPort.getUserById(userId).let {
             ResponseEntity.ok(it?.toDomain())
         }
     }

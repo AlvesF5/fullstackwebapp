@@ -9,11 +9,9 @@ interface UserRepositoryPort {
 
     fun listAllUsers() : ArrayList<UserDomain>?
 
-    fun getUserById(userId: String) : UserDomain?
-
     fun deleteUserById(userId: String)
 
     fun updateUserById(userId: String, userDomain: UserDomain) : UserDomain?
 
-    fun getUser(id: String): UserEntity?
+    fun getUserById(id: String): UserEntity?
 }
