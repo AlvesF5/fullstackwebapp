@@ -12,6 +12,7 @@ import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.domain.user.toGetUserByIdResponse
 import com.br.fullstackapp.poc.application.domain.user.toResetPassResponse
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
+import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/v1/user")
 class UserController(
-    val userUseCase: UserUseCase
+    val userUseCase: UserUseCase,
+    val addressRepositoryPort: AddressRepositoryPort
 ) {
 
     @PostMapping("/create")
@@ -35,7 +37,7 @@ class UserController(
     @GetMapping("/{userId}")
     fun getUserById(@PathVariable userId: String) : ResponseEntity<GetUserByIdResponse>{
         return userUseCase.getUserById(userId).let {
-            ResponseEntity.ok(it.body?.toGetUserByIdResponse())
+            ResponseEntity.ok(it.body?.toGetUserByIdResponse(addressRepositoryPort))
         }
     }
 

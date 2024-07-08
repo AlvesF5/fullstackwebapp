@@ -4,6 +4,7 @@ import com.br.fullstackapp.poc.adapter.input.converter.formatLocalDate
 import com.br.fullstackapp.poc.adapter.input.converter.formatTimestamp
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.GetUserByIdResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
+import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.Timestamp
 
@@ -29,7 +30,7 @@ fun UserDomain.toResetPassResponse() = email?.let {
     )
 }
 
-fun UserDomain.toGetUserByIdResponse() = GetUserByIdResponse(
+fun UserDomain.toGetUserByIdResponse(addressRepositoryPort: AddressRepositoryPort) = GetUserByIdResponse(
     id = id,
     firstName = firstName,
     lastName = lastName,
@@ -41,7 +42,7 @@ fun UserDomain.toGetUserByIdResponse() = GetUserByIdResponse(
     createdAt = createdAt?.let { formatTimestamp(it) },
     updatedAt = updatedAt?.let { formatTimestamp(it) },
     active = active,
-    addressId = addressId
+    address = addressId?.let { addressRepositoryPort.getAddressById(it.id).toString() }
 )
 
 

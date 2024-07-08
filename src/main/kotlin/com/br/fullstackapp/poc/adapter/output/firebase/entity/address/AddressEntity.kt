@@ -10,4 +10,8 @@ data class AddressEntity(
     val city: String?="",
     val neighborhood: String?="",
     val complement: String?="",
-)
+){
+    override fun toString(): String {
+        return "CEP: $cep, Rua/Logradouro: $street, Num.: $number, Estado: ${state?.name}, Cidade: $city, Bairro: $neighborhood, Complemento: $complement"
+    }
+}

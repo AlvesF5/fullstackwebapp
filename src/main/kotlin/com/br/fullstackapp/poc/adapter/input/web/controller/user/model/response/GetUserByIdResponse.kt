@@ -1,6 +1,6 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response
 
-import com.google.cloud.firestore.DocumentReference
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
 
 data class GetUserByIdResponse(
     var id: String?="",
@@ -14,5 +14,5 @@ data class GetUserByIdResponse(
     var createdAt: String? = "",
     var updatedAt: String? = "",
     val active: Boolean? = false,
-    val addressId: DocumentReference?=null
+    val address: String?=null
 )
