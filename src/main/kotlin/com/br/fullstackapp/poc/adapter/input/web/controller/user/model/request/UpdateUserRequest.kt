@@ -1,7 +1,8 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request
 
+import com.google.cloud.Timestamp
 import com.google.cloud.firestore.DocumentReference
-import java.sql.Timestamp
+
 import java.time.LocalDateTime
 
 data class UpdateUserRequest(
@@ -14,6 +15,6 @@ data class UpdateUserRequest(
     val birthDate: Timestamp?=null,
     val documentNumber: String?="",
     val gender: String?="",
-    val updatedAt: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
+    val updatedAt: Timestamp = Timestamp.now(),
     var addressId: DocumentReference?=null
 )

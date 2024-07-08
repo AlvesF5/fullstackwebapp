@@ -13,10 +13,6 @@ import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserResetP
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.model.UserLoginDomain
-import java.sql.Timestamp
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 
 fun CreateUserWhiteEmailAndPasswordResponse.toDomain() : UserDomain =
     UserDomain(

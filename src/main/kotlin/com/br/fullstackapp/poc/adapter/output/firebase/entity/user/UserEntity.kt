@@ -1,9 +1,8 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.entity.user
 
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
+import com.google.cloud.Timestamp
 import com.google.cloud.firestore.DocumentReference
-import java.sql.Timestamp
-import java.util.*
 
 data class UserEntity(
     var id: String?="",
@@ -18,20 +17,7 @@ data class UserEntity(
     var updatedAt: Timestamp? = null,
     val active: Boolean? = false,
     val addressId: DocumentReference?=null
-){
-    fun insertBirthDate(date: Date) {
-        this.birthDate = Timestamp(date.time)
-    }
-
-    fun insertCreatedAtDate(date: Date) {
-        this.createdAt = Timestamp(date.time)
-    }
-
-    fun insertUpdatedAt(date: Date){
-        this.updatedAt = Timestamp(date.time)
-    }
-
-}
+)
 
 fun UserEntity.toDomain() = UserDomain(
     id = id,

@@ -1,8 +1,11 @@
 package com.br.fullstackapp.poc.application.domain.user
 
+import com.br.fullstackapp.poc.adapter.input.converter.formatLocalDate
+import com.br.fullstackapp.poc.adapter.input.converter.formatTimestamp
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.GetUserByIdResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
 import com.google.cloud.firestore.DocumentReference
-import java.sql.Timestamp
+import com.google.cloud.Timestamp
 
 data class UserDomain(
     var id: String?="",
@@ -25,6 +28,21 @@ fun UserDomain.toResetPassResponse() = email?.let {
         email = it
     )
 }
+
+fun UserDomain.toGetUserByIdResponse() = GetUserByIdResponse(
+    id = id,
+    firstName = firstName,
+    lastName = lastName,
+    email = email,
+    phone = phone,
+    birthDate = birthDate?.toDate()?.let { formatLocalDate(it) },
+    documentNumber = documentNumber,
+    gender = gender,
+    createdAt = createdAt?.let { formatTimestamp(it) },
+    updatedAt = updatedAt?.let { formatTimestamp(it) },
+    active = active,
+    addressId = addressId
+)
 
 
 

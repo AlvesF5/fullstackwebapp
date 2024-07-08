@@ -3,6 +3,7 @@ package com.br.fullstackapp.poc.application.service.user
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.converter.toUserLoginDomain
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.toDomain
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
@@ -10,12 +11,13 @@ import com.br.fullstackapp.poc.application.model.UserLoginDomain
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.user.UserManagementAuthPort
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
+import com.google.cloud.Timestamp
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.sql.Timestamp
+
 import java.time.LocalDateTime
 import java.util.Map
 
@@ -31,8 +33,8 @@ class UserService(
 
         if (response!=null){
             userDomain.id=response.body?.id
-            userDomain.updatedAt= Timestamp.valueOf(LocalDateTime.now())
-            userDomain.createdAt= Timestamp.valueOf(LocalDateTime.now())
+            userDomain.updatedAt= Timestamp.now()
+            userDomain.createdAt= Timestamp.now()
             firebaseAuth!!.setCustomUserClaims(userDomain.id, Map.of<String, Any>("custom_claims", listOf("CUSTOMER")))
         }
 
@@ -52,8 +54,8 @@ class UserService(
     }
 
     override fun getUserById(userId: String): ResponseEntity<UserDomain> {
-        return userRepositoryPort.getUserById(userId).let {
-            ResponseEntity.ok(it)
+        return userRepositoryPort.getUser(userId).let {
+            ResponseEntity.ok(it?.toDomain())
         }
     }
 

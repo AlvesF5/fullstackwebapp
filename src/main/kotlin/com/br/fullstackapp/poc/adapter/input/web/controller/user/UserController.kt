@@ -5,13 +5,11 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.C
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UpdateUserRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserResetPassRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.CreateUserResponse
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserSendVerificationEmailResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.*
 import com.br.fullstackapp.poc.adapter.output.converter.*
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
+import com.br.fullstackapp.poc.application.domain.user.toGetUserByIdResponse
 import com.br.fullstackapp.poc.application.domain.user.toResetPassResponse
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import org.springframework.http.ResponseEntity
@@ -34,9 +32,11 @@ class UserController(
         return userUseCase.listAllUsers()
     }
 
-    @GetMapping("{userId}")
-    fun getUserById(@PathVariable userId: String) : ResponseEntity<UserDomain>{
-        return userUseCase.getUserById(userId)
+    @GetMapping("/{userId}")
+    fun getUserById(@PathVariable userId: String) : ResponseEntity<GetUserByIdResponse>{
+        return userUseCase.getUserById(userId).let {
+            ResponseEntity.ok(it.body?.toGetUserByIdResponse())
+        }
     }
 
     @DeleteMapping("/delete/{userId}")

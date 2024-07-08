@@ -16,11 +16,8 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.cloud.FirestoreClient
 import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Repository
-import org.springframework.web.client.HttpServerErrorException.InternalServerError
 import java.util.*
 import java.util.concurrent.ExecutionException
-
-import kotlin.collections.ArrayList
 
 @Repository
 class UserRepository(
@@ -96,16 +93,16 @@ class UserRepository(
             if (userDocument.exists()){
                 user = userDocument.toObject(UserEntity::class.java)
 
-                user?.let {
-                    val birthDate = userDocument.getDate("birthDate")
-                    val createdAt = userDocument.getDate("createdAt")
-                    val updatedAt = userDocument.getDate("updatedAt")
-                    if (birthDate != null && createdAt != null && updatedAt != null) {
-                        it.insertBirthDate(birthDate)
-                        it.insertCreatedAtDate(createdAt)
-                        updatedAt?.let { it1 -> it.insertUpdatedAt(it1) }
-                    }
-                }
+//                user?.let {
+//                    val birthDate = userDocument.getDate("birthDate")
+//                    val createdAt = userDocument.getDate("createdAt")
+//                    val updatedAt = userDocument.getDate("updatedAt")
+//                    if (birthDate != null && createdAt != null && updatedAt != null) {
+//                        it.insertBirthDate(birthDate)
+//                        it.insertCreatedAtDate(createdAt)
+//                        updatedAt?.let { it1 -> it.insertUpdatedAt(it1) }
+//                    }
+//                }
 
             }
             return user!!.toDomain()
@@ -114,6 +111,14 @@ class UserRepository(
             throw BadRequestException("Não foi possível carregar as informações do usuário!")
         }
 
+    }
+
+    override fun getUser(id: String): UserEntity?{
+        val documentReference : DocumentReference = getCollection(userCollection).document(id)
+        val future : ApiFuture<DocumentSnapshot> = documentReference.get()
+
+        val userDocument : DocumentSnapshot = future.get()
+        return userDocument.toObject(UserEntity::class.java)
     }
 
 

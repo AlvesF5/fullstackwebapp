@@ -1,5 +1,6 @@
 package com.br.fullstackapp.poc.application.port.output.user
 
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 
@@ -13,4 +14,6 @@ interface UserRepositoryPort {
     fun deleteUserById(userId: String)
 
     fun updateUserById(userId: String, userDomain: UserDomain) : UserDomain?
+
+    fun getUser(id: String): UserEntity?
 }

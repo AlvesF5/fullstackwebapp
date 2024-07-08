@@ -1,7 +1,10 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request
 
+import TimestampDeserializer
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
-import java.sql.Timestamp
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.google.cloud.Timestamp
+
 
 data class CreateUserRequest(
     var id: String?="",
@@ -10,6 +13,7 @@ data class CreateUserRequest(
     val email: String?="",
     val password: String?="",
     val phone: String?="",
+    @JsonDeserialize(using = TimestampDeserializer::class)
     val birthDate: Timestamp?=null,
     val documentNumber: String?="",
     val gender: String?="",

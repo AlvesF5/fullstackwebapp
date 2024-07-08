@@ -7,7 +7,7 @@ data class AddressDomain(
     val street: String?="",
     val number: String?="",
     val complement: String?="",
-    val state: UF
+    val state: UF?=null
 )
 enum class UF{
     AC, AL, AP,AM,BA,CE,DF,ES,GO,MA,MT,MS,MG,PA,PB,PR,PE,PI,RJ,RN,RS,RO,RR,SC
