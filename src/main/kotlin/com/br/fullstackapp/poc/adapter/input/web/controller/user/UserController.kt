@@ -47,7 +47,7 @@ class UserController(
     }
     @PutMapping("/update/{userId}")
     fun updateUserById(@PathVariable userId: String, @RequestBody updateUserRequest: UpdateUserRequest) : UserDomain?{
-        return  userUseCase.updateUserById(userId,updateUserRequest.toDomain())
+        return updateUserRequest.address?.let { userUseCase.updateUserById(userId,updateUserRequest.toDomain(), it) }
     }
     @PostMapping("/login")
     fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserLoginResponse> {

@@ -14,7 +14,7 @@ interface UserUseCase {
 
     fun deleteUserById(userId: String)
 
-    fun updateUserById(userId: String, userDomain: UserDomain) : UserDomain?
+    fun updateUserById(userId: String, userDomain: UserDomain, addressDomain: AddressDomain) : UserDomain?
 
     fun loginUser(userDomain: UserDomain) : ResponseEntity<UserLoginDomain>
 

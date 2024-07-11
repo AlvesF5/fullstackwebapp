@@ -1,12 +1,12 @@
 package com.br.fullstackapp.poc.application.domain.user
 
-import com.br.fullstackapp.poc.adapter.input.converter.formatLocalDate
 import com.br.fullstackapp.poc.adapter.input.converter.formatTimestamp
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.GetUserByIdResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
-import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.Timestamp
+import com.google.cloud.firestore.DocumentReference
 
 data class UserDomain(
     var id: String?="",
@@ -42,8 +42,13 @@ fun UserDomain.toGetUserByIdResponse(addressRepositoryPort: AddressRepositoryPor
     createdAt = createdAt?.let { formatTimestamp(it) },
     updatedAt = updatedAt?.let { formatTimestamp(it) },
     active = active,
-    address = addressId?.let { addressRepositoryPort.getAddressById(it.id).toString() }
+    address = addressId?.let { getUserAddress(it.id, addressRepositoryPort) },
+    addressString = addressId?.let { getUserAddress(it.id, addressRepositoryPort).toString() }
 )
+
+fun getUserAddress(addressId: String, addressRepositoryPort: AddressRepositoryPort) : AddressEntity?{
+    return addressRepositoryPort.getAddressById(addressId)
+}
 
 
 

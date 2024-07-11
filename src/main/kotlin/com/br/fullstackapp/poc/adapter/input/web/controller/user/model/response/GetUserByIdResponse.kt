@@ -14,5 +14,6 @@ data class GetUserByIdResponse(
     var createdAt: String? = "",
     var updatedAt: String? = "",
     val active: Boolean? = false,
-    val address: String?=null
+    val addressString: String?=null,
+    val address: AddressEntity?=null
 )

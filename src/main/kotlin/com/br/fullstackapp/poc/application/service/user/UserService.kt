@@ -63,8 +63,8 @@ class UserService(
         userRepositoryPort.deleteUserById(userId)
     }
 
-    override fun updateUserById(userId: String, userDomain: UserDomain): UserDomain? {
-        return userRepositoryPort.updateUserById(userId,userDomain)
+    override fun updateUserById(userId: String, userDomain: UserDomain, addressDomain: AddressDomain): UserDomain? {
+        return userRepositoryPort.updateUserById(userId,userDomain, addressDomain)
     }
 
     override fun loginUser(userDomain: UserDomain): ResponseEntity<UserLoginDomain> {

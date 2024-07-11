@@ -13,17 +13,14 @@ fun UserLoginRequest.toDomain() = UserDomain(
 )
 
 fun UpdateUserRequest.toDomain() = UserDomain(
-    id = id,
-    firstName = displayName,
+    firstName = firstName,
     lastName = lastName,
-    email = email,
-    password = password,
     phone = phone,
     birthDate = birthDate,
     documentNumber = documentNumber,
     gender = gender,
     updatedAt = updatedAt,
-    addressId = addressId
+    addressId = address?.id
 )
 
 fun formatLocalDate(date: Date): String {

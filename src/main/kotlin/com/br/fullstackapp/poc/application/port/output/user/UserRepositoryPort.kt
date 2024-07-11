@@ -11,7 +11,7 @@ interface UserRepositoryPort {
 
     fun deleteUserById(userId: String)
 
-    fun updateUserById(userId: String, userDomain: UserDomain) : UserDomain?
+    fun updateUserById(userId: String, userDomain: UserDomain, addressDomain: AddressDomain) : UserDomain?
 
     fun getUserById(id: String): UserEntity?
 }

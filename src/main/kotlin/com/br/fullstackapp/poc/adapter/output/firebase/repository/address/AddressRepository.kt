@@ -1,13 +1,13 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.repository.address
 
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
+import com.br.fullstackapp.poc.application.exception.NotFoundException
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
 import com.google.api.core.ApiFuture
 import com.google.cloud.firestore.CollectionReference
 import com.google.cloud.firestore.DocumentReference
 import com.google.cloud.firestore.DocumentSnapshot
 import com.google.firebase.cloud.FirestoreClient
-import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -31,11 +31,11 @@ class AddressRepository(
                 return addressDocument.toObject(AddressEntity::class.java)
             }
 
-            throw BadRequestException("Endereço não encontrado na base de dados!")
+            throw NotFoundException("Endereço não encontrado na base de dados!")
 
         } catch (e: Exception) {
             e.printStackTrace()
-            throw BadRequestException(e.message)
+            throw e
         }
     }
 }
