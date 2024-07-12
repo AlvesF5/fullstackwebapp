@@ -14,5 +14,4 @@ data class UpdateUserRequest(
     val documentNumber: String?="",
     val gender: String?="",
     val address: AddressDomain?=null,
-    var updatedAt: Timestamp? = null,
 )

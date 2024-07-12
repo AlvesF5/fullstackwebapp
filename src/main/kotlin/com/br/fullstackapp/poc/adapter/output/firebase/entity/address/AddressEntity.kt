@@ -3,6 +3,7 @@ package com.br.fullstackapp.poc.adapter.output.firebase.entity.address
 import com.br.fullstackapp.poc.application.domain.address.UF
 
 data class AddressEntity(
+    val id: String?="",
     val cep: String?="",
     val street: String?="",
     val number: String?="",

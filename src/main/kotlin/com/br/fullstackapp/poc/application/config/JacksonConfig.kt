@@ -20,6 +20,7 @@ class JacksonConfig {
         val module = SimpleModule()
         module.addSerializer(DocumentReference::class.java, DocumentReferenceSerializer())
         module.addDeserializer(Timestamp::class.java, TimestampDeserializer())
+        module.addDeserializer(DocumentReference::class.java, DocumentReferenceDeserializer())
         mapper.registerModule(module)
 
         return mapper

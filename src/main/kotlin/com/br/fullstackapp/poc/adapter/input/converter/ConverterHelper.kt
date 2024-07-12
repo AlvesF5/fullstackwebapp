@@ -4,6 +4,7 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.U
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.google.cloud.Timestamp
+import com.google.firebase.cloud.FirestoreClient
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,8 +20,7 @@ fun UpdateUserRequest.toDomain() = UserDomain(
     birthDate = birthDate,
     documentNumber = documentNumber,
     gender = gender,
-    updatedAt = updatedAt,
-    addressId = address?.id
+    addressId = address?.id?.let { FirestoreClient.getFirestore().collection("address").document(it) }
 )
 
 fun formatLocalDate(date: Date): String {

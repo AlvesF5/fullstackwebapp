@@ -1,9 +1,7 @@
 package com.br.fullstackapp.poc.application.domain.address
 
-import com.google.cloud.firestore.DocumentReference
-
 data class AddressDomain(
-    val id: DocumentReference?=null,
+    var id: String?="",
     val cep: String?="",
     val city: String?="",
     val neighborhood: String?="",

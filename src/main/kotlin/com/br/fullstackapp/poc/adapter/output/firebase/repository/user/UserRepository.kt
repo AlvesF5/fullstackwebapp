@@ -40,6 +40,7 @@ class UserRepository(
             userDomain.id?.let {
                 val addressId = UUID.randomUUID().toString()
                 val addressRef = getCollection(addressCollection).document(addressId)
+                addressDomain.id=addressId
                 val addressSaveResult = addressRef.set(addressDomain.toEntity()).get()
 
                 if (addressSaveResult != null) {
@@ -152,7 +153,7 @@ class UserRepository(
 
         }catch (e: Exception){
             e.printStackTrace()
-            throw BadRequestException("Não foi possível atualizar as informações do usuário!")
+            throw BadRequestException("Não foi possível atualizar as informações do usuário! Erro: ${e.message}")
 
         }
 
