@@ -1,11 +1,9 @@
 package com.br.fullstackapp.poc.adapter.output.firebase.repository.user
 
 import com.br.fullstackapp.poc.adapter.output.converter.toEntity
-import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.UserEntity
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
-import com.br.fullstackapp.poc.application.domain.address.UF
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.exception.NotFoundException
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
@@ -26,7 +24,6 @@ class UserRepository(
     private val addressCollection: String = "address",
     private val addressRepositoryPort: AddressRepositoryPort
 ) : UserRepositoryPort {
-
 
     fun dbFirestore() = FirestoreClient.getFirestore()
 

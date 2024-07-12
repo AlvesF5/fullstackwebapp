@@ -2,6 +2,7 @@ package com.br.fullstackapp.poc.application.domain.user
 
 import com.br.fullstackapp.poc.adapter.input.converter.formatTimestamp
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.GetUserByIdResponse
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UpdateUserResponse
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserResetPassResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.address.AddressEntity
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
@@ -32,6 +33,22 @@ fun UserDomain.toResetPassResponse() = email?.let {
 
 fun UserDomain.toGetUserByIdResponse(addressRepositoryPort: AddressRepositoryPort) = GetUserByIdResponse(
     id = id,
+    firstName = firstName,
+    lastName = lastName,
+    email = email,
+    phone = phone,
+    birthDate = birthDate?.let { formatTimestamp(it) },
+    documentNumber = documentNumber,
+    gender = gender,
+    createdAt = createdAt?.let { formatTimestamp(it) },
+    updatedAt = updatedAt?.let { formatTimestamp(it) },
+    active = active,
+    address = addressId?.let { getUserAddress(it.id, addressRepositoryPort) },
+    addressString = addressId?.let { getUserAddress(it.id, addressRepositoryPort).toString() }
+)
+
+fun UserDomain.toUpdateUserResponse(addressRepositoryPort: AddressRepositoryPort) = UpdateUserResponse(
+    id= id,
     firstName = firstName,
     lastName = lastName,
     email = email,

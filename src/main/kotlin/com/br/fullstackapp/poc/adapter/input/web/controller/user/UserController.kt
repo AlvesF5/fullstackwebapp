@@ -11,6 +11,7 @@ import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAcc
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.domain.user.toGetUserByIdResponse
 import com.br.fullstackapp.poc.application.domain.user.toResetPassResponse
+import com.br.fullstackapp.poc.application.domain.user.toUpdateUserResponse
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
 import org.springframework.http.ResponseEntity
@@ -46,8 +47,10 @@ class UserController(
         userUseCase.deleteUserById(userId)
     }
     @PutMapping("/update/{userId}")
-    fun updateUserById(@PathVariable userId: String, @RequestBody updateUserRequest: UpdateUserRequest) : UserDomain?{
-        return updateUserRequest.address?.let { userUseCase.updateUserById(userId,updateUserRequest.toDomain(), it) }
+    fun updateUserById(@PathVariable userId: String, @RequestBody updateUserRequest: UpdateUserRequest) : ResponseEntity<UpdateUserResponse>{
+        return userUseCase.updateUserById(userId,updateUserRequest.toDomain(), updateUserRequest.address!!).let {
+            ResponseEntity.ok(it?.toUpdateUserResponse(addressRepositoryPort))
+        }
     }
     @PostMapping("/login")
     fun loginUser(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserLoginResponse> {
