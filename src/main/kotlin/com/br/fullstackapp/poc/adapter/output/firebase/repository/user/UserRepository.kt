@@ -7,6 +7,7 @@ import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.address.UF
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
+import com.br.fullstackapp.poc.application.exception.NotFoundException
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
 import com.br.fullstackapp.poc.application.port.output.user.UserRepositoryPort
 import com.fasterxml.jackson.annotation.JsonCreator
@@ -79,7 +80,6 @@ class UserRepository(
         return null
     }
 
-
     override fun getUserById(id: String): UserEntity? {
         try {
             val documentReference: DocumentReference = getCollection(userCollection).document(id)
@@ -90,7 +90,7 @@ class UserRepository(
                 return userDocument.toObject(UserEntity::class.java)
             }
 
-            throw com.br.fullstackapp.poc.application.exception.NotFoundException("Usuário não encontrado na base de dados!")
+            throw NotFoundException("Usuário não encontrado na base de dados!")
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -110,51 +110,55 @@ class UserRepository(
 
     override fun updateUserById(userId: String, userDomain: UserDomain, addressDomain: AddressDomain): UserDomain? {
         try {
-
             val documentUserReference: DocumentReference = getCollection(userCollection).document(userId)
             val futureUser: ApiFuture<DocumentSnapshot> = documentUserReference.get()
             val userDocument: DocumentSnapshot = futureUser.get()
 
-            if (userDocument.exists()) {
-                val documentAddressReference : DocumentReference = getCollection(addressCollection).document(userDomain.addressId!!.id)
-
-                val userUpdates = mapOf(
-                    "firstName" to userDomain.firstName,
-                    "lastName" to userDomain.lastName,
-                    "phone" to userDomain.phone,
-                    "birthDate" to userDomain.birthDate,
-                    "documentNumber" to userDomain.documentNumber,
-                    "gender" to userDomain.gender,
-                    "updatedAt" to Timestamp.now(),
-                    "addressId" to userDomain.addressId
-                    )
-
-                val addressUpdates = mapOf(
-                    "cep" to addressDomain.cep,
-                    "street" to addressDomain.street,
-                    "number" to addressDomain.number,
-                    "state" to addressDomain.state,
-                    "city" to addressDomain.city,
-                    "neighborhood" to addressDomain.neighborhood,
-                    "complement" to addressDomain.complement
-                )
-
-                val writeResultUser: ApiFuture<WriteResult> = documentUserReference.update(userUpdates)
-                val writeResultAddress: ApiFuture<WriteResult> = documentAddressReference.update(addressUpdates)
-                writeResultUser.get()
-                writeResultAddress.get()
-
-                return userDocument.toObject(UserEntity::class.java)?.toDomain()
-
+            if (!userDocument.exists()){
+                throw NotFoundException("Usuário não localizado na base de dados!")
             }
 
-            getCollection(userCollection).document(userId).set(userDomain)
-            return userDomain
+            val documentAddressReference : DocumentReference = getCollection(addressCollection).document(userDomain.addressId!!.id)
+            val futureAddress: ApiFuture<DocumentSnapshot> = documentAddressReference.get()
+            val addressDocument: DocumentSnapshot = futureAddress.get()
+
+            if(!addressDocument.exists()){
+                throw NotFoundException("Endereço não localizado na base de dados!")
+            }
+
+            val userUpdates = mapOf(
+                "firstName" to userDomain.firstName,
+                "lastName" to userDomain.lastName,
+                "phone" to userDomain.phone,
+                "birthDate" to userDomain.birthDate,
+                "documentNumber" to userDomain.documentNumber,
+                "gender" to userDomain.gender,
+                "updatedAt" to Timestamp.now(),
+                "addressId" to userDomain.addressId
+                )
+
+            val addressUpdates = mapOf(
+                "cep" to addressDomain.cep,
+                "street" to addressDomain.street,
+                "number" to addressDomain.number,
+                "state" to addressDomain.state,
+                "city" to addressDomain.city,
+                "neighborhood" to addressDomain.neighborhood,
+                "complement" to addressDomain.complement
+            )
+
+            documentUserReference.update(userUpdates)
+            documentAddressReference.update(addressUpdates)
+
+            val documentUserUpdated: DocumentReference = getCollection(userCollection).document(userId)
+            val futureUserUpdated: ApiFuture<DocumentSnapshot> = documentUserUpdated.get()
+            val userUpdated : DocumentSnapshot = futureUserUpdated.get()
+
+            return userUpdated.toObject(UserEntity::class.java)?.toDomain()
 
         }catch (e: Exception){
             e.printStackTrace()
-            throw BadRequestException("Não foi possível atualizar as informações do usuário! Erro: ${e.message}")
-
+            throw BadRequestException("Erro: ${e.message}")
         }
 
     }
