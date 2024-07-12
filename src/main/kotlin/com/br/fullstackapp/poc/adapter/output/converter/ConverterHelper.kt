@@ -63,6 +63,7 @@ fun CreateUserRequest.toDomain() : UserDomain =
 
 fun AddressDomain.toEntity() : AddressEntity =
     AddressEntity(
+        id = id,
         cep = cep,
         city = city,
         neighborhood = neighborhood,
