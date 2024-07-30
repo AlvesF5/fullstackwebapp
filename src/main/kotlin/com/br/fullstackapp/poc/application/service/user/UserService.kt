@@ -4,6 +4,7 @@ import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.U
 import com.br.fullstackapp.poc.adapter.output.converter.toDomain
 import com.br.fullstackapp.poc.adapter.output.converter.toUserLoginDomain
 import com.br.fullstackapp.poc.adapter.output.firebase.entity.user.toDomain
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UpdatePasswordResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.toDomain
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
@@ -17,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-
-import java.time.LocalDateTime
 import java.util.Map
 
 @Service
@@ -93,5 +92,9 @@ class UserService(
             val token = it.body?.user?.token
             ResponseEntity.ok(userManagementAuthPort.sendVerifyEmailRequest(token).body?.toDomain())
         }
+    }
+
+    override fun updatePassword(idToken: String, newPassword: String): ResponseEntity<UpdatePasswordResponse> {
+        return userManagementAuthPort.updatePassword(idToken, newPassword)
     }
 }

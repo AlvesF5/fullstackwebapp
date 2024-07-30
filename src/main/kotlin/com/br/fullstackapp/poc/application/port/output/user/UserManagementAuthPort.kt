@@ -2,6 +2,7 @@ package com.br.fullstackapp.poc.application.port.output.user
 
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.UserLoginResponse
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UpdatePasswordResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserResetPassResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserVerifyEmailResponse
@@ -14,4 +15,5 @@ interface UserManagementAuthPort {
     fun sendVerifyEmailRequest(idToken: String?): ResponseEntity<UserVerifyEmailResponse>
     fun getAccountInfo(idToken: String?): ResponseEntity<UserGetAccountInfoResponse>
     fun sendPasswordResetEmail(email: String): ResponseEntity<UserResetPassResponse>
+    fun updatePassword(idToken: String, newPassword: String): ResponseEntity<UpdatePasswordResponse>
 }

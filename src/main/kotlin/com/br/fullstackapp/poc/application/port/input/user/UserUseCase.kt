@@ -1,5 +1,6 @@
 package com.br.fullstackapp.poc.application.port.input.user
 
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UpdatePasswordResponse
 import com.br.fullstackapp.poc.application.domain.address.AddressDomain
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.model.UserLoginDomain
@@ -23,4 +24,6 @@ interface UserUseCase {
     fun sendPasswordResetEmail(email: String): ResponseEntity<UserDomain>
 
     fun sendVerificationEmail(userDomain: UserDomain): ResponseEntity<UserDomain>
+
+    fun updatePassword(idToken: String, newPassword: String): ResponseEntity<UpdatePasswordResponse>
 }

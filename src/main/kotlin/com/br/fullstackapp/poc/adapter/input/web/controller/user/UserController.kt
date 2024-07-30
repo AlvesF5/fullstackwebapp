@@ -1,12 +1,11 @@
 package com.br.fullstackapp.poc.adapter.input.web.controller.user
 
 import com.br.fullstackapp.poc.adapter.input.converter.toDomain
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.CreateUserRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UpdateUserRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserLoginRequest
-import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.UserResetPassRequest
+import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.request.*
 import com.br.fullstackapp.poc.adapter.input.web.controller.user.model.response.*
 import com.br.fullstackapp.poc.adapter.output.converter.*
+
+import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UpdatePasswordResponse
 import com.br.fullstackapp.poc.adapter.output.firebase.model.response.UserGetAccountInfoResponse
 import com.br.fullstackapp.poc.application.domain.user.UserDomain
 import com.br.fullstackapp.poc.application.domain.user.toGetUserByIdResponse
@@ -14,6 +13,7 @@ import com.br.fullstackapp.poc.application.domain.user.toResetPassResponse
 import com.br.fullstackapp.poc.application.domain.user.toUpdateUserResponse
 import com.br.fullstackapp.poc.application.port.input.user.UserUseCase
 import com.br.fullstackapp.poc.application.port.output.address.AddressRepositoryPort
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -46,6 +46,8 @@ class UserController(
     fun deleteUserById(@PathVariable userId: String){
         userUseCase.deleteUserById(userId)
     }
+
+    @CrossOrigin(origins = ["http://localhost:3000"])
     @PutMapping("/update/{userId}")
     fun updateUserById(@PathVariable userId: String, @RequestBody updateUserRequest: UpdateUserRequest) : ResponseEntity<UpdateUserResponse>{
         return userUseCase.updateUserById(userId,updateUserRequest.toDomain(), updateUserRequest.address!!).let {
@@ -76,5 +78,17 @@ class UserController(
     @PostMapping("/sendVerificationEmail")
     fun userSendVerificationEmail(@RequestBody userLoginRequest: UserLoginRequest) : ResponseEntity<UserSendVerificationEmailResponse>{
         return ResponseEntity.ok(userUseCase.sendVerificationEmail(userLoginRequest.toDomain()).body?.toSendVerificationEmailResponse())
+    }
+
+    @PostMapping("/update-password")
+    fun updatePassword(@RequestBody @Valid updatePasswordRequest: UpdatePasswordRequest): ResponseEntity<UpdatePasswordResponse> {
+        val userLoginResponse = userUseCase.loginUser(
+            updatePasswordRequest.toDomain()
+        )
+        val updatePasswordResponse = userUseCase.updatePassword(
+            userLoginResponse.body!!.user.token!!,
+            updatePasswordRequest.newPassword
+        )
+        return updatePasswordResponse
     }
 }

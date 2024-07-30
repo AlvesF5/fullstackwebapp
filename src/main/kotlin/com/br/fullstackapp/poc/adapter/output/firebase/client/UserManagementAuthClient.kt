@@ -131,4 +131,24 @@ class UserManagementAuthClient : UserManagementAuthPort{
         println("Email verificado: $emailVerified")
         return ResponseEntity.ok(response)
     }
+
+    override fun updatePassword(idToken: String, newPassword: String): ResponseEntity<UpdatePasswordResponse> {
+        val request = UpdatePasswordRequest(
+            idToken = idToken,
+            password = newPassword
+        )
+
+        val response = restClient
+            .post()
+            .uri("https://identitytoolkit.googleapis.com/v1/accounts:update?key=$firebaseApiKey")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(request)
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError) { _, _ ->
+                throw BadRequestException("Erro ao atualizar a senha!")
+            }
+            .body(UpdatePasswordResponse::class.java)
+
+        return ResponseEntity.ok(response)
+    }
 }
